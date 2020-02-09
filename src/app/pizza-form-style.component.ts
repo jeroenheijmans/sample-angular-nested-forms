@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-pizza-form-style',
   template: `
-    <label>Base pie style</label>
-    <select [formControl]="style">
-      <option *ngFor="let option of availableStyles" [value]="option.id">
-        {{option.label}}
-      </option>
-    </select>
+    <div [formGroup]="styleInfo">
+      <label>Base pie style</label>
+      <select formControlName="style">
+        <option></option>
+        <option *ngFor="let option of availableStyles" [value]="option.id">
+          {{option.label}}
+        </option>
+      </select>
+    </div>
   `,
   styles: []
 })
-export class PizzaFormStyleComponent implements OnInit {
-  style = new FormControl();
+export class PizzaFormStyleComponent {
+  styleInfo = new FormGroup({
+    style: new FormControl('', [Validators.required]),
+  });
 
   availableStyles = [
     { id: 0, label: 'Roman' },
@@ -23,9 +28,7 @@ export class PizzaFormStyleComponent implements OnInit {
     { id: 4, label: 'Chicago' },
   ];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  @Input() set parent(val: FormGroup) {
+    val.addControl('pizzaTitle', this.styleInfo);
   }
-
 }

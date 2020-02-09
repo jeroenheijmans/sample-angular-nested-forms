@@ -18,8 +18,12 @@ label {
   display: block;
 }
 
+button:disabled {
+  opacity: 0.5;
+}
+
 input, select {
   min-width: 25em;
   padding: 4px 8px;
-  color: #666;
+  color: #00A;
 }

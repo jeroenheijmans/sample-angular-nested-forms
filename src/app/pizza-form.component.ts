@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-pizza-form',
   template: `
-    <label>Title for your pizza:</label>
-    <input type="text" [formControl]="title">
+    <div [formGroup]="menuInfo">
+      <label>Title for your pizza:</label>
+      <input type="text" formControlName="title">
+    </div>
     <h3>Style</h3>
-    <app-pizza-form-style></app-pizza-form-style>
+    <app-pizza-form-style [parent]="menuInfo"></app-pizza-form-style>
   `,
   styles: []
 })
-export class PizzaFormComponent implements OnInit {
-  title = new FormControl('');
+export class PizzaFormComponent {
+  menuInfo = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+  });
 
-  constructor() { }
-
-  ngOnInit(): void {
+  @Input() set parent(val: FormGroup) {
+    val.addControl('pizzaTitle', this.menuInfo);
   }
 
 }
