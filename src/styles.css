@@ -14,6 +14,13 @@ body {
   line-height: 18px;
 }
 
+pre {
+  padding: 10px;
+  border: 1px solid #aaa;
+  box-shadow: inset 2px 2px 3px #ddd;
+  background-color: #eee;
+}
+
 label {
   display: block;
 }
@@ -22,8 +29,33 @@ button:disabled {
   opacity: 0.5;
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
   min-width: 25em;
   padding: 4px 8px;
   color: #00A;
+  border: 1px solid #aaa;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 10px;
+}
+
+.ng-valid {
+  background: rgba(128, 255, 128, 0.2);
+}
+
+.ng-invalid {
+  background: rgba(240, 128, 128, 0.2);
+}
+
+input.ng-invalid,
+select.ng-invalid {
+  border: 1px solid red;
+}
+
+.p-10 {
+  padding: 10px;
 }

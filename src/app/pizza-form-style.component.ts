@@ -2,11 +2,13 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { pizzaStyles } from './pizza-styles.model';
+import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator';
 
 @Component({
   selector: 'app-pizza-form-style',
   template: `
-    <div [formGroup]="styleInfo">
+    <div [formGroup]="styleInfo" class="p-10">
       <label>Base pie style</label>
       <select formControlName="style">
         <option></option>
@@ -15,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
         </option>
       </select>
       <div *ngIf="showSauces">
+        <p>Sauce</p>
         <label *ngFor="let sauce of availableSauces">
           <input type="radio" formControlName="sauce" [value]="sauce.id">
           {{sauce.label}}
@@ -29,15 +32,12 @@ export class PizzaFormStyleComponent implements OnInit, OnDestroy {
 
   styleInfo = new FormGroup({
     style: new FormControl('', [Validators.required]),
-    sauce: new FormControl('', [Validators.required]),
+    sauce: new FormControl('', []),
+  }, {
+    validators: [sauceChoiceRequiredValidator]
   });
 
-  availableStyles = [
-    { id: 'style-1', needsSauceChoice: true, label: 'Roman' },
-    { id: 'style-2', needsSauceChoice: true, label: 'Neapolitan' },
-    { id: 'style-3', needsSauceChoice: true, label: 'NY Style' },
-    { id: 'style-4', needsSauceChoice: false, label: 'Chicago Deep Dish' },
-  ];
+  availableStyles = pizzaStyles;
 
   availableSauces = [
     { id: 'sauce-123', label: 'Tomato' },
@@ -47,7 +47,7 @@ export class PizzaFormStyleComponent implements OnInit, OnDestroy {
   showSauces?: boolean;
 
   @Input() set parent(val: FormGroup) {
-    val.addControl('pizzaTitle', this.styleInfo);
+    val.addControl('styleInfo', this.styleInfo);
   }
 
   ngOnInit(): void {

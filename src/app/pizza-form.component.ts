@@ -4,7 +4,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-pizza-form',
   template: `
-    <div [formGroup]="menuInfo">
+    <div [formGroup]="menuInfo" class="p-10">
       <label>Title for your pizza:</label>
       <input type="text" formControlName="title">
     </div>
@@ -19,7 +19,7 @@ export class PizzaFormComponent {
   });
 
   @Input() set parent(val: FormGroup) {
-    val.addControl('pizzaTitle', this.menuInfo);
+    val.addControl('menuInfo', this.menuInfo);
   }
 
 }
