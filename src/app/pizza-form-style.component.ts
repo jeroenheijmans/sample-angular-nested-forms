@@ -22,6 +22,9 @@ import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator'
           <input type="radio" formControlName="sauce" [value]="sauce.id">
           {{sauce.label}}
         </label>
+        <div *ngIf="styleInfo.invalid && sauce.touched">
+          <p style="color: crimson;">Specifying sauce is required for the selected type of pie.</p>
+        </div>
       </div>
     </div>
   `,
@@ -30,9 +33,12 @@ import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator'
 export class PizzaFormStyleComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject();
 
+  style = new FormControl('', [Validators.required]);
+  sauce = new FormControl('', []);
+
   styleInfo = new FormGroup({
-    style: new FormControl('', [Validators.required]),
-    sauce: new FormControl('', []),
+    style: this.style,
+    sauce: this.sauce,
   }, {
     validators: [sauceChoiceRequiredValidator]
   });

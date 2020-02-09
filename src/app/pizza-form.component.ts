@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { disallowJustWhitespace } from './no-whitespace.validator';
 
 @Component({
   selector: 'app-pizza-form',
@@ -15,7 +16,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 })
 export class PizzaFormComponent {
   menuInfo = new FormGroup({
-    title: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required, Validators.minLength(3), disallowJustWhitespace]),
   });
 
   @Input() set parent(val: FormGroup) {
