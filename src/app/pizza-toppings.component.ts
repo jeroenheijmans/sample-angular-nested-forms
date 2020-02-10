@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { pizzaToppings } from './pizza-toppings.model';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { BaseDisposableComponent } from './base-disposable.component';
 
 @Component({
   selector: 'app-pizza-toppings',
@@ -20,34 +20,41 @@ import { Subject } from 'rxjs';
         toppings.
       </p>
       <p class="warning" *ngIf="showToppingCountWarning">
-        That means you're now <strong>overloading your pie</strong> at your own risk! :D
+        ⚠ That means you're now <strong>overloading your pie</strong> at your own risk! :D
       </p>
     </div>
   `,
   styles: []
 })
-export class PizzaToppingsComponent implements OnInit, OnDestroy {
-  destroyed$ = new Subject();
-
+export class PizzaToppingsComponent extends BaseDisposableComponent implements OnInit {
   showToppingCountWarning = false;
   availableToppings = pizzaToppings;
-
   toppings = new FormControl('', []);
 
   @Input() set parent(val: FormGroup) {
     val.addControl('toppings', this.toppings);
   }
 
-  @Input() toppingCountSuggestion: number;
+  // tslint:disable-next-line: variable-name
+  private _toppingCountSuggestion: number | null;
+  @Input() set toppingCountSuggestion(val: number | null) {
+    this._toppingCountSuggestion = val;
+    this.resetWarning();
+  }
+  get toppingCountSuggestion() {
+    return this._toppingCountSuggestion;
+  }
 
   ngOnInit() {
     this.toppings.valueChanges
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(v => this.showToppingCountWarning = v.length > this.toppingCountSuggestion);
+      .subscribe(_ => this.resetWarning());
   }
 
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+  resetWarning() {
+    const selecteds = this.toppings.value as string[];
+    this.showToppingCountWarning = this.toppingCountSuggestion !== null
+      && selecteds
+      && selecteds.length > this.toppingCountSuggestion;
   }
 }

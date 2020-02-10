@@ -1,9 +1,9 @@
-import { Component, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { disallowJustWhitespace } from './no-whitespace.validator';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { pizzaStyles } from './pizza-styles.model';
+import { BaseDisposableComponent } from './base-disposable.component';
 
 @Component({
   selector: 'app-pizza-form',
@@ -19,9 +19,7 @@ import { pizzaStyles } from './pizza-styles.model';
   `,
   styles: []
 })
-export class PizzaFormComponent implements AfterViewInit, OnDestroy {
-  destroyed$ = new Subject();
-
+export class PizzaFormComponent extends BaseDisposableComponent implements AfterViewInit {
   menuInfo = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), disallowJustWhitespace]),
   });
@@ -39,10 +37,5 @@ export class PizzaFormComponent implements AfterViewInit, OnDestroy {
         const style = pizzaStyles.find(s => s.id === v);
         this.toppingCountSuggestion = style ? style.toppingCountSuggestion : null;
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { pizzaStyles } from './pizza-styles.model';
 import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator';
+import { BaseDisposableComponent } from './base-disposable.component';
 
 @Component({
   selector: 'app-pizza-form-style',
@@ -30,9 +30,7 @@ import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator'
   `,
   styles: []
 })
-export class PizzaFormStyleComponent implements OnInit, OnDestroy {
-  destroyed$ = new Subject();
-
+export class PizzaFormStyleComponent extends BaseDisposableComponent implements OnInit {
   style = new FormControl('', [Validators.required]);
   sauce = new FormControl('', []);
 
@@ -60,10 +58,5 @@ export class PizzaFormStyleComponent implements OnInit, OnDestroy {
     this.styleInfo.get('style')?.valueChanges
       .pipe(takeUntil(this.destroyed$))
       .subscribe(v => this.showSauces = this.availableStyles.find(s => s.id === v)?.needsSauceChoice);
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }
