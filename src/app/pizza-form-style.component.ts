@@ -9,7 +9,7 @@ import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator'
   selector: 'app-pizza-form-style',
   template: `
     <div [formGroup]="styleInfo" class="p-10">
-      <label>Base pie style</label>
+      <label>Base pie style:</label>
       <select formControlName="style">
         <option></option>
         <option *ngFor="let option of availableStyles" [value]="option.id">
@@ -17,7 +17,7 @@ import { sauceChoiceRequiredValidator } from './sauce-choice-required.validator'
         </option>
       </select>
       <div *ngIf="showSauces">
-        <p>Sauce</p>
+        <p>Sauce:</p>
         <label *ngFor="let sauce of availableSauces">
           <input type="radio" formControlName="sauce" [value]="sauce.id">
           {{sauce.label}}
