@@ -16,15 +16,14 @@ import { BaseDisposableComponent } from './base-disposable.component';
           {{option.label}}
         </option>
       </select>
+      <p *appValidationMessageFor="style">A pie without a pie is no pie. Please pick one!</p>
       <div *ngIf="showSauces">
         <p>Sauce:</p>
         <label *ngFor="let sauce of availableSauces">
           <input type="radio" formControlName="sauce" [value]="sauce.id">
           {{sauce.label}}
         </label>
-        <div *ngIf="styleInfo.invalid && sauce.touched">
-          <p style="color: crimson;">Specifying sauce is required for the selected type of pie.</p>
-        </div>
+        <p *appValidationMessageFor="styleInfo">Specifying sauce is required for the selected type of pie.</p>
       </div>
     </div>
   `,

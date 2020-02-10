@@ -6,6 +6,7 @@ import { PizzaFormComponent } from './pizza-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PizzaFormStyleComponent } from './pizza-form-style.component';
 import { PizzaToppingsComponent } from './pizza-toppings.component';
+import { ValidationMessageForDirective } from './validation-message-for.directive';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { PizzaToppingsComponent } from './pizza-toppings.component';
     PizzaFormComponent,
     PizzaFormStyleComponent,
     PizzaToppingsComponent,
+    ValidationMessageForDirective,
   ],
   imports: [
     BrowserModule,

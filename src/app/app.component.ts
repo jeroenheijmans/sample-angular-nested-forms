@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
         <p>Compose your own pizza!</p>
         <form (ngSubmit)="onSubmit()" [formGroup]="pizzaFormGroup" class="p-10">
           <app-pizza-form [parent]="pizzaFormGroup"></app-pizza-form>
-          <p><button type="submit" [disabled]="!pizzaFormGroup.valid">Submit</button></p>
+          <p><button type="submit">Submit</button></p>
         </form>
       </div>
       <div>
@@ -34,6 +34,7 @@ export class AppComponent implements AfterViewChecked, OnDestroy {
   errors = null;
 
   onSubmit() {
+    this.pizzaFormGroup.markAllAsTouched();
     console.log('submitting!');
   }
 
@@ -56,7 +57,7 @@ export class AppComponent implements AfterViewChecked, OnDestroy {
     const result: any = { };
 
     if (control.errors) {
-      result.__errors = control.errors
+      result.__errors = control.errors;
     }
 
     Object.keys(control.controls).forEach(k => {

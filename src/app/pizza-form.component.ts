@@ -8,9 +8,11 @@ import { BaseDisposableComponent } from './base-disposable.component';
 @Component({
   selector: 'app-pizza-form',
   template: `
+    <h3>Title</h3>
     <div [formGroup]="menuInfo" class="p-10">
-      <label>Title for your pizza:</label>
+      <label>Name your pizza:</label>
       <input type="text" formControlName="title">
+      <p *appValidationMessageFor="title">Title of at least 3 characters is required.</p>
     </div>
     <h3>Style</h3>
     <app-pizza-form-style [parent]="menuInfo"></app-pizza-form-style>
@@ -20,8 +22,10 @@ import { BaseDisposableComponent } from './base-disposable.component';
   styles: []
 })
 export class PizzaFormComponent extends BaseDisposableComponent implements AfterViewInit {
+  title = new FormControl('', [Validators.required, Validators.minLength(3), disallowJustWhitespace]);
+
   menuInfo = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3), disallowJustWhitespace]),
+    title: this.title,
   });
 
   toppingCountSuggestion: number | null = null;
