@@ -1,12 +1,12 @@
 import { Directive, TemplateRef, ViewContainerRef, Input, Renderer2, ElementRef } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { BaseDisposableComponent } from './base-disposable.component';
+import { BaseDisposableDirective } from './base-disposable.directive';
 
 @Directive({
   selector: '[appValidationMessageFor]'
 })
-export class ValidationMessageForDirective extends BaseDisposableComponent {
+export class ValidationMessageForDirective extends BaseDisposableDirective {
   private hasView = false;
 
   @Input() set appValidationMessageFor(control: AbstractControl) {
