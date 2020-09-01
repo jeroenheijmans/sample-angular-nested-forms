@@ -13,11 +13,13 @@ import { BaseDisposableComponent } from './base-disposable.component';
       <label>Name your pizza:</label>
       <input type="text" formControlName="title">
       <p *appValidationMessageFor="title">Title of at least 3 characters is required.</p>
+      <h3>Style</h3>
+      <app-pizza-form-style [parent]="menuInfo"></app-pizza-form-style>
+      <app-pizza-toppings [parent]="menuInfo" [toppingCountSuggestion]="toppingCountSuggestion"></app-pizza-toppings>
     </div>
-    <h3>Style</h3>
-    <app-pizza-form-style [parent]="menuInfo"></app-pizza-form-style>
-    <app-pizza-toppings [parent]="menuInfo" [toppingCountSuggestion]="toppingCountSuggestion">
-    </app-pizza-toppings>
+    <div [formGroup]="delivery">
+      <app-pizza-delivery-tips [parent]="delivery"></app-pizza-delivery-tips>
+    </div>
   `,
   styles: []
 })
@@ -28,10 +30,13 @@ export class PizzaFormComponent extends BaseDisposableComponent implements After
     title: this.title,
   });
 
+  delivery = new FormGroup({});
+
   toppingCountSuggestion: number | null = null;
 
   @Input() set parent(val: FormGroup) {
     val.addControl('menuInfo', this.menuInfo);
+    val.addControl('delivery', this.delivery);
   }
 
   ngAfterViewInit() {
