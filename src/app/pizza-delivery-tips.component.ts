@@ -16,12 +16,28 @@ import { BaseDisposableComponent } from './base-disposable.component';
         Add your delivery instructions:
       </p>
       <textarea [required]="instructionsRequired" formControlName="instructions"></textarea>
+      <span style="color: red;" *ngIf="instructions.errors?.required">You really have to provide instructions if you say you'd tip to have them followed...</span>
     </div>
   `,
   styles: ['textarea { width: 100%; height: 5em; }']
 })
 export class PizzaDeliveryTipsComponent extends BaseDisposableComponent implements OnInit {
-  instructionsRequired = false;
+  // tslint:disable-next-line: variable-name
+  _instructionsRequired = false;
+  set instructionsRequired(val: boolean) {
+    if (val !== this._instructionsRequired) {
+      this._instructionsRequired = val;
+
+      // If this setter was called as a result from change detection, we
+      // need to explicitly inform angular that if leads to _another_ set
+      // of changes it may need to detect.
+      // See also: https://github.com/angular/angular/issues/23657
+      this.cdRef.detectChanges();
+    }
+  }
+  get instructionsRequired(): boolean {
+    return this._instructionsRequired;
+  }
 
   willTip = new FormControl('', []);
   instructions = new FormControl('', []);
@@ -42,14 +58,6 @@ export class PizzaDeliveryTipsComponent extends BaseDisposableComponent implemen
   ngOnInit() {
     this.willTip.valueChanges
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(value => {
-        this.instructionsRequired = value;
-
-        // Only needed because we *display* (for debugging purposes)
-        // the validation results, and changing above boolean changes
-        // the validators because it changes [required] on another
-        // form control. So we tell angular about that:
-        this.cdRef.detectChanges();
-      });
+      .subscribe(value => this.instructionsRequired = value);
   }
 }
